@@ -39,6 +39,18 @@ const styles = StyleSheet.create({
     width: "48%",
   },
 
+  timeButton: {
+    backgroundColor: "#fff",
+    height: 56,
+    borderRadius: 8,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    marginTop: 4,
+    marginBottom: 16,
+  },
+
   submit: {
     backgroundColor: "#04d361",
     height: 56,
@@ -52,6 +64,19 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "Archivo_700Bold",
     fontSize: 16,
+  },
+
+  warningAdvice: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  textWarningAdvice: {
+    fontSize: 26,
+    flex: 1,
+    fontFamily: "Archivo_700Bold",
+    color: "#a8a8a8",
   },
 });
 
