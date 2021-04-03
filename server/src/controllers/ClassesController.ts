@@ -35,26 +35,25 @@ export default class ClassesController {
       .join("users", "classes.user_id", "=", "users.id")
       .select(["classes.*", "users.*"]);
 
-    return response.json(classes);
+    const serializedClasses = classes.map((classItem) => {
+      return {
+        ...classItem,
+        image_url: `http://192.168.100.4:3333/uploads/${classItem.avatar}`,
+      };
+    });
+
+    return response.json(serializedClasses);
   }
 
   async create(request: Request, response: Response) {
-    const {
-      name,
-      avatar,
-      whatsapp,
-      bio,
-      subject,
-      cost,
-      schedule,
-    } = request.body;
+    const { name, whatsapp, bio, subject, cost, schedule } = request.body;
 
     const trx = await db.transaction();
 
     try {
       const insertedUsersIds = await trx("users").insert({
         name,
-        avatar,
+        avatar: request.file.filename,
         whatsapp,
         bio,
       });
@@ -69,7 +68,7 @@ export default class ClassesController {
 
       const class_id = insertedClassesIds[0];
 
-      const classSchedule = schedule.map((item: ScheduleItem) => {
+      const classSchedule = JSON.parse(schedule).map((item: ScheduleItem) => {
         return {
           class_id,
           week_day: item.week_day,

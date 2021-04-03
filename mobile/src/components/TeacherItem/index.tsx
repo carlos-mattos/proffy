@@ -10,7 +10,7 @@ import api from "../../services/api";
 
 export interface Teacher {
   id: number;
-  avatar: string;
+  image_url: string;
   bio: string;
   cost: number;
   name: string;
@@ -58,7 +58,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, favorited }) => {
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
-        <Image style={styles.avatar} source={{ uri: teacher.avatar }} />
+        <Image style={styles.avatar} source={{ uri: teacher.image_url }} />
 
         <View style={styles.profileInfo}>
           <Text style={styles.name}>{teacher.name}</Text>

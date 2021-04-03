@@ -183,12 +183,6 @@ export default function TeacherList() {
           />
         ))}
       </ScrollView>
-      {!isFiltersVisible && (
-        <View style={styles.warningAdvice}>
-          <Feather name="alert-triangle" size={30} />
-          <Text style={styles.textWarningAdvice}>Filtre, para pesquisar.</Text>
-        </View>
-      )}
     </View>
   );
 }

@@ -7,10 +7,10 @@ import Textarea from "../../components/Textarea";
 import Select from "../../components/Select";
 import api from "../../services/api";
 import { useHistory } from "react-router-dom";
+import Dropzone from "../../components/Dropzone";
 
 const TeacherForm = () => {
   const [name, setName] = useState("");
-  const [avatar, setAvatar] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [bio, setBio] = useState("");
   const [subject, setSubject] = useState("");
@@ -22,6 +22,7 @@ const TeacherForm = () => {
       to: "",
     },
   ]);
+  const [selectedFile, setSelectedFile] = useState<File>();
 
   const history = useHistory();
 
@@ -36,24 +37,29 @@ const TeacherForm = () => {
     ]);
   }
 
-  function handleCreateClass(event: FormEvent) {
+  async function handleCreateClass(event: FormEvent) {
     event.preventDefault();
 
+    const data = new FormData();
+
+    data.append("name", name);
+    data.append("whatsapp", whatsapp);
+    data.append("bio", bio);
+    data.append("subject", subject);
+    data.append("cost", cost);
+    data.append("schedule", JSON.stringify(scheduleItems));
+    if (selectedFile) {
+      data.append("avatar", selectedFile);
+    }
+
     api
-      .post("/classes", {
-        name,
-        avatar,
-        whatsapp,
-        bio,
-        subject,
-        cost: Number(cost),
-        schedule: scheduleItems,
-      })
+      .post("/classes", data)
       .then(() => {
         alert("Cadastro feito com sucesso!");
         history.push("/");
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         alert("Erro na operação");
       });
   }
@@ -84,20 +90,13 @@ const TeacherForm = () => {
         <form onSubmit={handleCreateClass}>
           <fieldset>
             <legend>Seus dados</legend>
+            <Dropzone onFileUploaded={setSelectedFile} />
             <Input
               name="name"
               label="Nome completo"
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
-              }}
-            />
-            <Input
-              name="avatar"
-              label="avatar"
-              value={avatar}
-              onChange={(e) => {
-                setAvatar(e.target.value);
               }}
             />
             <Input
